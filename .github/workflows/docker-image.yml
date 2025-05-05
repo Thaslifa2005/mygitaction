@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Deploy
 
 on:
   push:
@@ -7,12 +7,12 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    -  run: docker build . -t thaslifa/mygitaction
+    -run: echo "${{secrets.DOCKERHUB_PASSWORD}}"  |docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin 
+   - run: docker push thaslifa/mygitaction:latest
+   
